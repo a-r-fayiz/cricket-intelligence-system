@@ -5,21 +5,25 @@ import json
 import plotly.express as px
 import streamlit.components.v1 as components
 
+st.set_page_config(page_title="Cricket Intelligence System", layout="wide")
 
 components.html(
     """
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-945G10EC81"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+    const script = document.createElement("script");
+    script.src = "https://www.googletagmanager.com/gtag/js?id=G-945G10EC81";
+    script.async = true;
+    document.head.appendChild(script);
 
-      gtag('config', 'G-945G10EC81');
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-945G10EC81');
     </script>
     """,
     height=0,
 )
+
 
 # Load the cricket data JSON file with caching
 @st.cache_data
