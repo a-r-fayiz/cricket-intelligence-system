@@ -1,6 +1,6 @@
-# 🏏 Cricket Intelligence System (CIS)
+# 🏏 Cricket Intelligence System
 
-Cricket Intelligence System (CIS) is a **Streamlit-based interactive dashboard** that provides detailed cricket statistics analysis for **India (Team ID: 6)** across formats (**Test, ODI, T20**) from **2011 to 2025**.
+Cricket Intelligence System is a **Streamlit-based interactive dashboard** that provides detailed cricket statistics analysis for **India (Team ID: 6)** across formats (**Test, ODI, T20**) from **2011 to 2025**.
 
 🚀 Live App: https://cricket-intelligence-system.streamlit.app/
 
