@@ -300,26 +300,38 @@ def main():
                     # Display the chart
                     st.plotly_chart(fig_4s_6s)
 
-            # Bowling Section
             st.markdown("## 🎯 Bowling Performance")
             st.markdown("### Bowling Summary (Detailed)")
-
-            # Convert numeric columns safely for bowling
-            player_data["Wickets"] = pd.to_numeric(player_data["Wickets"], errors="coerce")
-            player_data["Innings"] = pd.to_numeric(player_data["Innings"], errors="coerce")
-            player_data["Average"] = pd.to_numeric(player_data["Average"].replace("-", 0), errors="coerce")
-            player_data["Economy Rate"] = pd.to_numeric(player_data["Economy Rate"].replace("-", 0), errors="coerce")
-            numeric_cols = player_data.select_dtypes(include=["number"]).columns
-            player_data[numeric_cols] = player_data[numeric_cols].fillna(0)
-
-            # Aggregate bowling data
-            bowling_table = player_data[player_data["Style"] == "bowling"].groupby("Format").agg({
+            
+            # Filter bowling data
+            bowling_data = player_data[player_data["Style"] == "bowling"].copy()
+            
+            # Convert numeric columns
+            numeric_cols = ["Innings", "Wickets", "Average", "Economy Rate"]
+            
+            for col in numeric_cols:
+                if col in bowling_data.columns:
+                    bowling_data[col] = (
+                        bowling_data[col]
+                        .replace("-", pd.NA)
+                        .pipe(pd.to_numeric, errors="coerce")
+                    )
+            
+            # Fill missing numeric values
+            bowling_data[numeric_cols] = bowling_data[numeric_cols].fillna(0)
+            
+            # Aggregate
+            bowling_table = bowling_data.groupby("Format", as_index=False).agg({
                 "Innings": "sum",
                 "Wickets": "sum",
                 "Average": "mean",
                 "Economy Rate": "mean"
-            }).reset_index()
-
+            })
+            
+            # Ensure aggregated columns are numeric
+            for col in ["Innings", "Wickets", "Average", "Economy Rate"]:
+                bowling_table[col] = pd.to_numeric(bowling_table[col], errors="coerce").fillna(0)
+            
             # Handle "NO DATA" for bowling summary table
             if bowling_table.empty:
                 st.markdown("### NO DATA")
