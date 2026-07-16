@@ -162,8 +162,9 @@ def main():
             player_data["6s"] = pd.to_numeric(player_data["6s"], errors="coerce")
             player_data["Not Outs"] = pd.to_numeric(player_data["Not Outs"], errors="coerce")
 
-            # Fill NaN values with 0
-            player_data.fillna(0, inplace=True)
+            # Fill only numeric columns
+            numeric_cols = player_data.select_dtypes(include=["number"]).columns
+            player_data[numeric_cols] = player_data[numeric_cols].fillna(0)
 
             # Convert to int
             player_data["Innings"] = player_data["Innings"].astype(int)
