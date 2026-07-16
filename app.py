@@ -309,7 +309,8 @@ def main():
             player_data["Innings"] = pd.to_numeric(player_data["Innings"], errors="coerce")
             player_data["Average"] = pd.to_numeric(player_data["Average"].replace("-", 0), errors="coerce")
             player_data["Economy Rate"] = pd.to_numeric(player_data["Economy Rate"].replace("-", 0), errors="coerce")
-            player_data.fillna(0, inplace=True)
+            numeric_cols = player_data.select_dtypes(include=["number"]).columns
+            player_data[numeric_cols] = player_data[numeric_cols].fillna(0)
 
             # Aggregate bowling data
             bowling_table = player_data[player_data["Style"] == "bowling"].groupby("Format").agg({
