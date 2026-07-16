@@ -349,12 +349,13 @@ def main():
                 bowling_table = pd.concat([bowling_table, pd.DataFrame([total_row])], ignore_index=True)
 
                 # Display the table
-                st.table(bowling_table.style.format({
-                    "Average": "{:.2f}",
-                    "Economy Rate": "{:.2f}",
-                    "Wickets": "{:.0f}",
-                    "Innings": "{:.0f}"
-                }))
+                # Force numeric types
+                for col in ["Average", "Economy Rate", "Wickets", "Innings"]:
+                    bowling_table[col] = pd.to_numeric(
+                        bowling_table[col], errors="coerce"
+                    ).fillna(0)
+                
+                st.table(bowling_table)
 
             # Bowling Economy Rate Over Years
             st.markdown("### Bowling Economy Rate Over Years")
